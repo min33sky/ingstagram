@@ -20,10 +20,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp: firebase.app.App = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
-const auth = firebaseApp.auth();
+// const auth = firebaseApp.auth();
 const { FieldValue } = firebase.firestore;
 
 // console.log('firebase: ', firebaseApp);
 // seedDatabase(firebaseApp);
 
-export { db, auth, firebase, FieldValue };
+export { db, firebase, FieldValue };

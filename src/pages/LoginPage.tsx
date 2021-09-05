@@ -47,16 +47,20 @@ function LoginPage() {
     if (emailInputRef.current) {
       emailInputRef.current.focus();
     }
+
+    return () => {
+      emailInputRef.current = null;
+    };
   }, [error]);
 
   return (
-    <div className="container flex mx-auto max-w-screen-md items-center h-screen">
+    <div className="container flex items-center h-screen max-w-screen-md mx-auto">
       <div className="flex w-3/5">
         <img src="/images/iphone-with-profile.jpg" alt="IPhone with Ingstargam App" />
       </div>
       <div className="flex flex-col w-2/5 mr-4">
-        <div className="flex flex-col items-center bg-white p-4 border border-gray-200 mb-4">
-          <img src="/images/logo.png" alt="Ingstagram" className="mt-2 w-6/12 mb-4" />
+        <div className="flex flex-col items-center p-4 mb-4 bg-white border border-gray-200">
+          <img src="/images/logo.png" alt="Ingstagram" className="w-6/12 mt-2 mb-4" />
 
           {error && <p className="mb-4 text-xs text-red-600">{error}</p>}
 
@@ -67,7 +71,7 @@ function LoginPage() {
               aria-label="Enter your Email Address"
               value={emailAddress}
               placeholder="Email Address"
-              className="text-sm outline-none text-gray-600 w-full mr-3 py-5 px-4 h-2 border border-gray-200 rounded mb-2"
+              className="w-full h-2 px-4 py-5 mb-2 mr-3 text-sm text-gray-600 border border-gray-200 rounded outline-none"
               onChange={(e) => setEmailAddress(e.target.value)}
             />
             <input
@@ -75,7 +79,7 @@ function LoginPage() {
               aria-label="Enter your Password"
               value={password}
               placeholder="Password"
-              className="text-sm outline-none text-gray-600 w-full mr-3 py-5 px-4 h-2 border border-gray-200 rounded mb-2"
+              className="w-full h-2 px-4 py-5 mb-2 mr-3 text-sm text-gray-600 border border-gray-200 rounded outline-none"
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
@@ -90,7 +94,7 @@ function LoginPage() {
           </form>
         </div>
 
-        <div className="flex justify-center items-center flex-col w-full bg-white p-4 border border-gray-200">
+        <div className="flex flex-col items-center justify-center w-full p-4 bg-white border border-gray-200">
           <p className="text-sm">
             계정이 없으신가요?{' '}
             <Link to="/signup" className="font-bold text-blue-500">
