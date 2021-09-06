@@ -31,7 +31,7 @@ function Header() {
         <div className="flex justify-between h-full">
           {/* Header Left */}
           <div className="flex items-center text-center text-gray-700 cursor-pointer">
-            <h1 className="flex justify-center w-full ">
+            <h1 className="flex justify-center w-full mx-2 ">
               <Link to={ROUTES.DASHBOARD} aria-label="Ingstagram Logo">
                 <img src="/images/logo.png" alt="Ingstagram Logo" className="w-6/12 mt-2 " />
               </Link>

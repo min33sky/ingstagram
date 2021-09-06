@@ -11,7 +11,7 @@ function Timeline() {
   }
 
   return (
-    <div className="col-span-2">
+    <div>
       {photos?.length > 0 ? (
         photos.map((content) => <Post key={content.docId} content={content} />)
       ) : (

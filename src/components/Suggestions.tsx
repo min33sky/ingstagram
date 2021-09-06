@@ -30,7 +30,7 @@ function Suggestions({ userId, following, loggedInUserDocId }: ISuggestionsProps
   return (
     <div className="flex flex-col rounded">
       <div className="flex items-center justify-between mb-2 text-sm">
-        <p className="font-bold text-gray-700">Suggestions for you</p>
+        <p className="font-bold text-gray-700">회원님을 위한 추천</p>
       </div>
       <div>
         {profiles.map((profile) => (
