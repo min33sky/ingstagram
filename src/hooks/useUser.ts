@@ -17,9 +17,8 @@ function useUser() {
      */
     async function getUserObjByUserId() {
       if (user?.uid) {
-        const [response] = await getUserByUserId(user.uid);
+        const response = await getUserByUserId(user.uid);
         setActiveUser(response);
-        console.log('response: ', response);
       }
     }
     getUserObjByUserId();
