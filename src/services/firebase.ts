@@ -27,6 +27,21 @@ export async function getUserByUserId(userId: string) {
   return user[0];
 }
 
+export async function getUserByUsername(username: string) {
+  const result = await firebase
+    .firestore()
+    .collection('users')
+    .where('username', '==', username)
+    .get();
+
+  const user: IUser[] = result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  })) as any;
+
+  return user[0];
+}
+
 //* 친구 추천
 export async function getSuggestedProfiles(userId: string, following: string[]) {
   const result = await firebase.firestore().collection('users').limit(10).get();
@@ -40,7 +55,14 @@ export async function getSuggestedProfiles(userId: string, following: string[]) 
     .filter((profile: any) => profile.userId !== userId && !following.includes(profile.userId));
 }
 
-//* 팔로우 추가
+/**
+ *
+ * 팔로우 추가 및 삭제
+ * @param loggedInUserDocId
+ * @param profileId
+ * @param isFollowingProfile if true, unfollow user else folllow user
+ * @returns
+ */
 export async function updateLoggedInUserFollowing(
   loggedInUserDocId: string, // 로그인 한 유저
   profileId: string, // 팔로우 할 유저
@@ -57,7 +79,13 @@ export async function updateLoggedInUserFollowing(
     });
 }
 
-//* 팔로워 추가
+/**
+ * 팔로워 추가 및 삭제
+ * @param profileDocId
+ * @param userId
+ * @param isFollowingProfile
+ * @returns
+ */
 export async function updateFollowedUserFollowers(
   profileDocId: string, // 팔로우 대상
   userId: string, // 팔로워
@@ -68,7 +96,7 @@ export async function updateFollowedUserFollowers(
     .collection('users')
     .doc(profileDocId)
     .update({
-      following: isFollowingProfile
+      followers: isFollowingProfile
         ? FieldValue.arrayRemove(userId)
         : FieldValue.arrayUnion(userId),
     });
@@ -109,4 +137,58 @@ export async function getPhotos(userId: string, following: string[]): Promise<IP
   );
 
   return photosWithUserDetails;
+}
+
+/**
+ * 해당 유저가 올린 사진들을 가져오기
+ * @param userId
+ * @returns
+ */
+export async function getUserPhotosByUserId(userId: string) {
+  const result = await firebase
+    .firestore()
+    .collection('photos')
+    .where('userId', '==', userId)
+    .get();
+
+  const photos: IPhoto[] = result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  })) as any;
+
+  return photos;
+}
+
+/**
+ * 로그인 한 유저가 해당 유저를 팔로우 했는지 유무
+ * @param loggedInUserId
+ * @param profileUserId
+ */
+export async function isUserFollowingProfile(loggedInUserId: string, profileUserId: string) {
+  const result = await firebase
+    .firestore()
+    .collection('users')
+    .where('userId', '==', loggedInUserId)
+    .where('following', 'array-contains', profileUserId)
+    .get();
+
+  const followingUser: IUser[] = result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  })) as any;
+
+  return followingUser[0];
+}
+
+export async function toggleFollow(
+  activeUserDocId: string,
+  profileDocId: string,
+  followingUserId: string,
+  profileUserId: string,
+  isFollowingProfile: boolean
+) {
+  console.log('activeuserId: ', activeUserDocId);
+
+  await updateLoggedInUserFollowing(activeUserDocId, profileUserId, isFollowingProfile);
+  await updateFollowedUserFollowers(profileDocId, followingUserId, isFollowingProfile);
 }

@@ -6,6 +6,7 @@ export interface IUser {
   docId: string;
   emailAddress: string;
   following: string[];
+  followers: string[];
   fullName: string;
   userId: string;
   username: string;
@@ -41,6 +42,7 @@ export interface IPhotoWithDetail {
   userId: string;
   userLatitude: string;
   userLongitude: string;
+  //? 추가 부분
   username: string;
   userLikedPhoto: boolean;
 }
